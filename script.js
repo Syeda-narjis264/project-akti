@@ -158,3 +158,44 @@ var swiper = new Swiper(".blogs-slider", {
     },
   },
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  const checkoutBtn = document.getElementById('checkout-btn');
+
+  // Retrieve cart items from local storage or initialize an empty array
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  // Display cart items
+  displayCartItems();
+
+  // Calculate and display total price
+  calculateTotal();
+
+  // Event listener for checkout button
+  checkoutBtn.addEventListener('click', function() {
+      alert('Thank you for your purchase!');
+      // Clear cart after checkout
+      localStorage.removeItem('cart');
+      cart = [];
+      displayCartItems();
+      calculateTotal();
+  });
+
+  // Function to display cart items
+  function displayCartItems() {
+      cartItems.innerHTML = '';
+      cart.forEach(item => {
+          const listItem = document.createElement('li');
+          listItem.textContent = item.name + ' - $' + item.price.toFixed(2);
+          cartItems.appendChild(listItem);
+      });
+  }
+
+  // Function to calculate and display total price
+  function calculateTotal() {
+      let total = cart.reduce((acc, item) => acc + item.price, 0);
+      cartTotal.textContent = total.toFixed(2);
+  }
+});
